@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-devel-ubuntu16.04
+FROM nvidia/cuda:10.1-cudnn7-devel
 
 MAINTAINER Anthony Tatowicz
 
@@ -11,24 +11,17 @@ RUN apt-get update \
     && apt-get update \
     && apt-get install -y git \
      cmake \
-     libcryptopp-dev \
-     libleveldb-dev \
-     libjsoncpp-dev \
-     libjsonrpccpp-dev \
-     libboost-all-dev \
-     libgmp-dev \
-     libreadline-dev \
-     libcurl4-gnutls-dev \
-     ocl-icd-libopencl1 \
      opencl-headers \
      mesa-common-dev \
-     libmicrohttpd-dev \
-     build-essential
+     build-essential \
+     libdbus-1-dev \
+     perl 
 
 # Git repo set up
 RUN git clone https://github.com/ethereum-mining/ethminer.git; \
     cd ethminer; \
-    git checkout tags/v0.18.0 
+    git checkout tags/v0.18.0; \
+    git submodule update --init --recursive 
 
 # Build
 RUN cd ethminer; \
